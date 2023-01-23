@@ -6,6 +6,10 @@ import CustomSchedule from '../../components/CustomSchedule';
 
 const HomeScreen =()=>{
     const [name, setName] = useState('');
+    const [inputCalorie, setInputCalorie] = useState(0);
+    const [outputCalorie, setOutputCalorie] = useState(0);
+    const [left, setLeft] = useState(0);
+
     useEffect(()=>{
         async function fetchUsername() {
             try {
@@ -17,7 +21,26 @@ const HomeScreen =()=>{
             }
           }
           fetchUsername();
-},[])
+    },[])
+
+    useEffect(() => {
+        fetch('http://localhost:3000/diet/sum')
+          .then((response) => response.json())
+          .then((data) => setInputCalorie(data.inputCalorie))
+          .catch((error) => console.error(error));
+      }, []);
+
+    useEffect(()=>{
+        fetch('http://localhost:3000/diet/sum/burned')
+          .then((response) => response.json())
+          .then((data) => setOutputCalorie(data.outputCalorie))
+          .catch((error) => console.error(error));
+    }, [])
+
+    useEffect(()=>{
+        const x=inputCalorie-outputCalorie;
+        setLeft(x);
+    })
     
     const onMPressed =()=>{
         console.warn('Monday')
@@ -72,15 +95,15 @@ const HomeScreen =()=>{
                 <View style={styles.childContainer}>
                         <View style={styles.calorieChild}>
                             <Text style={styles.calorieText}>Eaten:</Text>
-                            <Text style={styles.calorieText}>1800</Text>
+                            <Text style={styles.calorieText}>{inputCalorie}</Text>
                         </View>
                         <View style={styles.calorieChild}>
                             <Text style={styles.calorieText}>Burnt:</Text>
-                            <Text style={styles.calorieText}>1000</Text>
+                            <Text style={styles.calorieText}>{outputCalorie}</Text>
                         </View>
                         <View style={styles.calorieChild}>
                             <Text style={styles.calorieText}>Left:</Text>
-                            <Text style={styles.calorieText}>800</Text>
+                            <Text style={styles.calorieText}>{left}</Text>
                     </View>
 
                 </View>

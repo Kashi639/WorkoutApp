@@ -4,45 +4,21 @@ import sequelize from './utils/database.js';
 
 import router from './routes/routes.js';
 
-// import cookieParser from 'cookie-parser';
-
 import session from 'express-session';
 
-import RedisStore from 'connect-redis';
-
-import {createClient} from 'redis';
+import cron from 'node-cron';
+import request from "request";
 
 const app = express();
 
-const redisClient = createClient();
-// const client = createClient();
-
-// client.on('error', (err) => console.log('Redis Client Error', err));
-
-// await client.connect();
-
-// await client.set('key', 'value');
-// const value = await client.get('key');
-// await client.disconnect();
-redisClient.connect().catch(console.error)
-
-// const cookieParser = cookie-parser();
-// const sessions = express-session(); 
-// creating 24 hours from milliseconds
 const oneDay = 1000 * 60 * 60 * 24;
 //session middleware
 app.use(session({
-    store: new RedisStore({
-    host: 'localhost',
-    port: 6379,
-    client: redisClient,
-    ttl: 260
-  }),
     name:'test',
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized: true,
-    // cookie: { 
-    //     maxAge: oneDay },
+    cookie: { 
+        maxAge: oneDay },
     resave: false
 }));
 
@@ -50,11 +26,6 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//serving public file
-// app.use(express.static(__dirname));
-
-// cookie parser middleware
-// app.use(cookieParser());
 
 app.use((_, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -69,6 +40,14 @@ app.use((req,res,next) => {
 });
 
 app.use(router);
+
+cron.schedule("0 0 * * *", () => {
+    request.delete("http://localhost:3000/diet/delete/At12", (error, response, body) => {
+        if (error) {
+            console.log(error);
+        }
+    });
+});
 
 sequelize.sync(); 
 

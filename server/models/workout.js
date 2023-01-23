@@ -5,9 +5,9 @@ import sequelize from '../utils/database.js';
 const Workout = sequelize.define('workout', {
    workout_id:{
        type: Sequelize.INTEGER,
-       autoIncrement: true,
+       autoIncrement: true,      // to be set false in future
        allowNull: false,
-       primaryKey: true,
+       primaryKey: true,         // to be set false in future
    },
    user_id:{
       type: Sequelize.STRING,

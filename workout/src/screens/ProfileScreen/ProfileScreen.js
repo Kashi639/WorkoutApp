@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable, Image, useWindowDimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from '../../../assets/images/profile_pic.png';
@@ -12,6 +12,20 @@ const ProfileScreen = ()=>{
     const [isError, setIsError] = useState(false);  //<= changes here
     const [message, setMessage] = useState('');     //<= changes here
 
+    const [name, setName] = useState('');
+    useEffect(()=>{
+        async function fetchUsername() {
+            try {
+              const response = await fetch('http://localhost:3000/session');
+              const data = await response.json();
+              setName(data.name);
+            } catch (error) {
+              console.error(error);
+            }
+          }
+          fetchUsername();
+},[])
+
     const onSettingsPressed=()=>{
         console.warn('Settings')
     }
@@ -21,7 +35,33 @@ const ProfileScreen = ()=>{
         console.warn('Delete Workouts')
     }
     const onDeleteAccountPressed=()=>{
-        console.warn('Delete Account')
+        fetch(`${API_URL}/account`, {            //<= changes here
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+        })
+        .then(async res => { 
+            try {
+                const jsonRes = await res.json();
+                if (res.status === 500) {
+                    setIsError(true);
+                    setMessage(jsonRes.message);
+                } else{
+                    const nav =() =>{
+                     navigation.navigate('SignIn');
+                    }
+                    setIsError(false);
+                    setMessage(jsonRes.message);
+                    setTimeout(nav, 3000);
+                }
+            } catch (err) {
+                console.log(err);
+            };
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
     const onLogoutPressed=()=>{
         fetch(`${API_URL}/signout`, {            //<= changes here
@@ -77,7 +117,7 @@ const ProfileScreen = ()=>{
                    <Image source={Profile} style={{width: 150, height: 150, borderRadius: 150/2}}/>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', alignItems:'flex-start', paddingLeft:10}}>
-                    <Text style={{color:'#536DFE',fontSize: 30, marginBottom: 10, fontWeight: '600',}}>Name</Text>
+                    <Text style={{color:'#536DFE',fontSize: 30, marginBottom: 10, fontWeight: '600',}}>{name}</Text>
                     <Text style={{color:'#B8B8B8', fontSize: 20, marginBottom: 10, fontWeight: '600',}}>Free User</Text>
                     <Text style={{color:'#B8B8B8', fontSize: 20, marginBottom: 10, fontWeight: '600',}}>Level 1</Text>
                 </View>

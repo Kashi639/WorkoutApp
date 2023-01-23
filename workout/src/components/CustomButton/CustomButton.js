@@ -26,8 +26,10 @@ const styles= StyleSheet.create({
         borderColor: '#3b71f3',
         borderWidth: 2,
     },
-    container_TERTIARY:{
-        
+    container_FOURTH:{
+        backgroundColor: 'green',
+        width: '25%',
+        borderRadius: 5,
     },
     text:{
         fontWeight: 'bold',
@@ -39,6 +41,9 @@ const styles= StyleSheet.create({
     },
     text_TERTIARY:{
         color: 'gray',
+    },
+    text_FOURTH:{
+    color: '#ffff'
     }
 })
 
