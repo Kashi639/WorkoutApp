@@ -107,11 +107,7 @@ const CustomForm =({route})=>{
     };  
     
     const getMessage = () => {
-        if (day == null){
             return message
-        } else{
-            return message+' '+'for'+' '+day;
-        }
     }
 
     return(

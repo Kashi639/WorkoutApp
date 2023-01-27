@@ -59,7 +59,7 @@ const form =(req,res,next)=>{
         Workout.findOne({
           where: {user_id: req.session.name},
           order: [
-            ['createdAt', 'DESC']
+            ['workout_id', 'DESC']
           ]
         }).then(latestWorkout=>{
           if(!latestWorkout){
