@@ -34,18 +34,22 @@ const CustomForm =({route})=>{
         {label: 'Bridges', value:'Bridges'},
         {label: 'Twists', value:'Twists'},
     ]);
-    const [e1r1, setE1r1]=useState();
-    const [e1r2, setE1r2]=useState();
-    const [e1r3, setE1r3]=useState();
-    const [e2r1, setE2r1]=useState();
-    const [e2r2, setE2r2]=useState();
-    const [e2r3, setE2r3]=useState();
+    const [e1r1, setE1r1]=useState(null);
+    const [e1r2, setE1r2]=useState(null);
+    const [e1r3, setE1r3]=useState(null);
+    const [e2r1, setE2r1]=useState(null);
+    const [e2r2, setE2r2]=useState(null);
+    const [e2r3, setE2r3]=useState(null);
     const [dayOpen, setDayOpen] = useState(false);
     const [exercise1Open, setExercise1Open] = useState(false);
     const [exercise2Open, setExercise2Open] = useState(false);
-    const [day, setDay] = useState(null);
-    const [exercise1, setExercise1] = useState(null);
-    const [exercise2, setExercise2] = useState(null);
+    const [day, setDay] = useState('');
+    const [exercise1, setExercise1] = useState('');
+    const [exercise2, setExercise2] = useState('');
+    
+    const navigation = useNavigation();
+    const [message, setMessage] = useState('');
+    const [isError, setIsError] = useState(false);
 
     const onDayOpen = useCallback(() => {
         setExercise1Open(false);
@@ -61,24 +65,21 @@ const CustomForm =({route})=>{
         setExercise1Open(false);
         setDayOpen(false);
       }, []);
-    
-    const navigation = useNavigation();
-    const [message, setMessage] = useState('');
-    const [isError, setIsError] = useState(false);
+
 
     const onSubmitHandler =()=>{
-        const payload = {
-            workout_name,
-            day,
-            exercise1,
-            exercise2,
-            e1r1,
-            e1r2,
-            e1r3,
-            e2r1,
-            e2r2,
-            e2r3,
-        };
+        const payload={
+                workout_name,
+                day,
+                exercise1,
+                exercise2,
+                e1r1,
+                e1r2,
+                e1r3,
+                e2r1,
+                e2r2,
+                e2r3
+            }
         fetch(`${API_URL}/form`, {
             method: 'POST',
             headers: {
@@ -124,8 +125,9 @@ const CustomForm =({route})=>{
              style={styles.input} 
              placeholder="Eg. Hybrid Callisthenics"
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
             </View>
+
             <View style={styles.inputs}>
             <Text style={{color:'black', alignSelf:'center'}}>Day:</Text>    
             <View style={{marginLeft:12, marginRight:20}}>
@@ -178,21 +180,21 @@ const CustomForm =({route})=>{
              onChangeText={setE1r1}
              style={styles.input_3} 
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
              <TextInput 
              maxLength={30}
              value={e1r2} 
              onChangeText={setE1r2}
              style={styles.input_3} 
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
              <TextInput 
              maxLength={30}
              value={e1r3} 
              onChangeText={setE1r3}
              style={styles.input_3} 
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
             </View>
             </View>
             <View style={styles.inputs_2}>
@@ -204,24 +206,27 @@ const CustomForm =({route})=>{
              onChangeText={setE2r1}
              style={styles.input_3} 
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
              <TextInput 
              maxLength={30}
              value={e2r2} 
              onChangeText={setE2r2}
              style={styles.input_3} 
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
              <TextInput 
              maxLength={30}
              value={e2r3} 
              onChangeText={setE2r3}
              style={styles.input_3} 
              placeholderTextColor='grey'
-             autoCapitalize="none"></TextInput>
+             autoCapitalize="words"></TextInput>
             </View>
             </View>
             </View>
+
+            
+
             <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text> 
             <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
                 <Text style={styles.buttonText}>Submit</Text>
@@ -263,13 +268,14 @@ const styles= StyleSheet.create({
         paddingLeft:10,
         marginRight:10
     },
-    input_2:{
+    input2:{
+        marginRight:20, 
+        marginTop:12,
         color:'black',
         borderRadius:12,
         borderWidth:1,
         paddingHorizontal:10,
         marginLeft:0,
-        marginRight:10,
     },
     input_3:{
         color:'black',

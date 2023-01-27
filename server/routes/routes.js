@@ -137,11 +137,70 @@ router.post('/form', form);
 router.get('/workouts/:workoutname', workout)
 
 router.post('/workouts/form', (req,res,next)=>{
-    if(!req.body.workout_name && !req.body.day && !req.body.exercise1 && !req.body.exercise2 && !req.body.e1r1 && !req.body.e1r2 && !req.body.e1r3 && !req.body.e2r1 && !req.body.e2r2 && !req.body.e2r3){
+    if(!req.body){
         return res.status(400).json({message: "Please enter all Details"});
     } else {
-        Workout.findAll({
-            
+        Workout.findOne({
+            where:{user_id:req.session.name, workout_name:req.body.workout_name }
+        }).then(dbWorkout => {
+            if(dbWorkout){
+                res.status(409).json({message: 'A workout routine already exists with this name'})
+            }
+            else{
+                Workout.findOne({
+                    where: {user_id: req.session.name},
+                    order: [
+                      ['createdAt', 'DESC']
+                    ]
+                  }).then(latestWorkout =>{
+                    if(!latestWorkout){
+                       const workoutid= 1;
+                       const data =[]
+                       for(i=0; i<2; i++){
+                        data.push({
+                        workout_id:workoutid,
+                        user_id:req.session.name,
+                        workout_name:req.body.workout_name,
+                        day:req.body.day[i],
+                        exercise1:req.body.exercise1[i],
+                        exercise2:req.body.exercise2[i],
+                        e1r1:req.body.e1r1[i],
+                        e1r2:req.body.e1r2[i],
+                        e1r3:req.body.e1r3[i],
+                        e2r1:req.body.e2r1[i],
+                        e2r2:req.body.e2r2[i],
+                        e2r3:req.body.e2r3[i],
+                        })
+                    }
+                     Workout.bulkCreate(data)
+                    } else {
+                        const workoutid= latestWorkout.workout_id + 1;
+                        const data =[]
+                       for(i=0; i<2; i++){
+                        data.push({
+                        workout_id:workoutid,
+                        user_id:req.session.name,
+                        workout_name:req.body.workout_name,
+                        day:req.body.day[i],
+                        exercise1:req.body.exercise1[i],
+                        exercise2:req.body.exercise2[i],
+                        e1r1:req.body.e1r1[i],
+                        e1r2:req.body.e1r2[i],
+                        e1r3:req.body.e1r3[i],
+                        e2r1:req.body.e2r1[i],
+                        e2r2:req.body.e2r2[i],
+                        e2r3:req.body.e2r3[i],
+                        })
+                    }
+                    Workout.bulkCreate(data)
+                    }
+                  }).then(() => {
+                    res.status(200).json({message: "Workout Created"});
+                  }).catch(err => {
+                    console.log(err);
+                    res.status(502).json({message: "Error while creating workout! Please try again."});
+                  });
+            }
         })
     }
 })
@@ -155,6 +214,15 @@ router.delete('/account', async (req,res,next)=>{
         res.status(500).json({ message: 'An error occurred while deleting your account.' });
     }
 });
+
+router.delete('/workouts/delete', async (req,res,next)=>{
+    try {
+       await Workout.destroy({where:{user_id:req.session.name}});
+       res.status(200).json({message: 'Workouts deleted'})
+    } catch (err) {
+        res.status(500).json({message: 'An error occured while deleting your workouts'})
+    }
+})
 
 router.get('/signout', (req,res,next)=>{
     if (req.session) {

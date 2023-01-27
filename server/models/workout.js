@@ -3,11 +3,15 @@ import { Sequelize } from 'sequelize';
 import sequelize from '../utils/database.js';
 
 const Workout = sequelize.define('workout', {
+   id:{
+       type: Sequelize.INTEGER,
+       autoIncrement: true,      
+       allowNull: false,
+       primaryKey: true, 
+   },
    workout_id:{
        type: Sequelize.INTEGER,
-       autoIncrement: true,      // to be set false in future
-       allowNull: false,
-       primaryKey: true,         // to be set false in future
+       allowNull: true,
    },
    user_id:{
       type: Sequelize.STRING,

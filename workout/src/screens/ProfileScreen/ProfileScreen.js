@@ -32,8 +32,31 @@ const ProfileScreen = ()=>{
     const {height}= useWindowDimensions();
 
     const onDeleteWorkoutPressed=()=>{
-        console.warn('Delete Workouts')
+        fetch(`${API_URL}/workouts/delete`, {            //<= changes here
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+        })
+        .then(async res => { 
+            try {
+                const jsonRes = await res.json();
+                if (res.status === 500) {
+                    setIsError(true);
+                    setMessage(jsonRes.message);
+                } else{
+                    setIsError(false);
+                    setMessage(jsonRes.message);
+                }
+            } catch (err) {
+                console.log(err);
+            };
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
+
     const onDeleteAccountPressed=()=>{
         fetch(`${API_URL}/account`, {            //<= changes here
             method: 'DELETE',
@@ -63,6 +86,7 @@ const ProfileScreen = ()=>{
             console.log(err);
         });
     }
+
     const onLogoutPressed=()=>{
         fetch(`${API_URL}/signout`, {            //<= changes here
             method: 'GET',
