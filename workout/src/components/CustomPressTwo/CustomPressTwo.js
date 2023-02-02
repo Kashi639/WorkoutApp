@@ -1,25 +1,36 @@
 import React from 'react';
 import {ImageBackground, View, Text, StyleSheet, Pressable} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-const CustomPress = ({onPress, text, image}) =>{
+const CustomPressTwo = ({onPress, text,}) =>{
     return(
         
         <Pressable 
         onPress={onPress} >
-            <ImageBackground 
-            source={image} 
-            resizeMode="cover" 
+            <LinearGradient
+            colors={['#333333',
+                '#404040',
+                '#4d4d4d',
+                '#5a5a5a',
+                '#686868',
+                '#767676',
+                '#848484',
+                '#939393',
+                '#a2a2a2',
+                '#b1b1b1']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
             style={styles.container}
-            imageStyle={{ borderRadius: 10, borderWidth: 0}}>
+            >
             <Text style={styles.text}>{text}</Text>
-            </ImageBackground>
+            </LinearGradient>
         </Pressable>
     )
 }
 
 const styles= StyleSheet.create({
     container:{
-        backgroundColor: '#536DFE',
+        // backgroundColor: '#536DFE',
         // width: '90%',
         borderWidth: 0,
         borderRadius: 10,
@@ -41,4 +52,4 @@ const styles= StyleSheet.create({
       },
 })
 
-export default CustomPress
+export default CustomPressTwo

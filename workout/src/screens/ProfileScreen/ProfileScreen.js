@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable, Image, useWindowDimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from '../../../assets/images/profile_pic.png';
-import CustomPress from '../../components/CustomPress';
+import CustomPressTwo from '../../components/CustomPressTwo';
 import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const API_URL = Platform.OS === 'android' ? 'http://localhost:3000' : 'http://192.168.2.143:3000';    //<= changes here
 
@@ -106,7 +107,7 @@ const ProfileScreen = ()=>{
                     }
                     setIsError(false);
                     setMessage(jsonRes.message);
-                    setTimeout(nav, 3000);
+                    setTimeout(nav, 1000);
                 }
             } catch (err) {
                 console.log(err);
@@ -123,36 +124,41 @@ const ProfileScreen = ()=>{
     }                                                       //<= till here
     return(
     <ScrollView style={styles.profileScreen}>
-            <View style={styles.profile}>
-                <View style={{paddingLeft:27, flex:2}}>
-                    <Text style={styles.text}>My Profile</Text>
-                </View>
-                <View style={{alignSelf:'center'}}>
-                    <Pressable
-                    onPress={onSettingsPressed}
-                    >
-                     <Ionicons name="settings-sharp" size={30} color="#FFFF"/>
-                    </Pressable>
-                </View>
+            <View >
+            <LinearGradient
+                colors={['#ff9900',
+                    '#ff9c0e',
+                    '#ff9f18',
+                    '#ffa21f',
+                    '#ffa526',
+                    '#ffa82d',
+                    '#ffab33',
+                    '#ffae38',
+                    '#ffb13e',
+                    '#ffb443']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.profile}
+                >
+                    <View><Text style={styles.text}>My Profile</Text></View>
+                </LinearGradient>
             </View>
             
-            <View style={{flex:1, flexDirection:'row'}}>
-                <View style={{paddingHorizontal: 10,paddingVertical: 10,}}>
+            <View style={{flex:1, flexDirection:'column',alignItems:'center'}}>
+                <View style={{paddingVertical: 20,}}>
                    <Image source={Profile} style={{width: 150, height: 150, borderRadius: 150/2}}/>
                 </View>
-                <View style={{flex:1, flexDirection: 'column', alignItems:'flex-start', paddingLeft:10}}>
-                    <Text style={{color:'#536DFE',fontSize: 30, marginBottom: 10, fontWeight: '600',}}>{name}</Text>
-                    <Text style={{color:'#B8B8B8', fontSize: 20, marginBottom: 10, fontWeight: '600',}}>Free User</Text>
-                    <Text style={{color:'#B8B8B8', fontSize: 20, marginBottom: 10, fontWeight: '600',}}>Level 1</Text>
-                </View>
+                    <View><Text style={{color:'#333333',fontSize: 30, marginBottom: 10, fontWeight: '600',}}>{name}</Text></View>
+                    <View><Text style={{color:'#666666', fontSize: 20, marginBottom: 10, fontWeight: '600',}}>Free User</Text></View>
+                    <View><Text style={{color:'#666666', fontSize: 20, marginBottom: 10, fontWeight: '600',}}>Level 1</Text></View>
             </View>
-            <CustomPress
+            <CustomPressTwo
             text={"Delete my Workouts"} 
             onPress={onDeleteWorkoutPressed}/>
-            <CustomPress
+            <CustomPressTwo
             text={"Delete my Account"} 
             onPress={onDeleteAccountPressed}/>
-            <CustomPress
+            <CustomPressTwo
             text={"Logout"} 
             onPress={onLogoutPressed}/>
             <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
@@ -171,9 +177,10 @@ const styles= StyleSheet.create({
         paddingHorizontal: 10,
         flex: 1,
         flexDirection:'row',
+        justifyContent:'center'
     },
     text:{
-        color:'#FFFF',
+        color:'#333333',
         fontSize: 30,
         marginBottom: 10,
         fontWeight: '600',

@@ -2,10 +2,16 @@ import React,{useState, useEffect} from 'react';
 import {Modal, Pressable, TextInput, Alert, View, Text, ScrollView, StyleSheet} from 'react-native';
 import CustomPress from '../../components/CustomPress';
 import CustomButton from '../../components/CustomButton';
+import LinearGradient from 'react-native-linear-gradient';
 
 const API_URL = Platform.OS === 'android' ? 'http://localhost:3000' : 'http://192.168.2.143:3000';
 
 const DietScreen = ()=>{
+
+    const breakfast=require('../../../assets/images/breakfast.jpg')
+    const lunch=require('../../../assets/images/lunch.jpg')
+    const snacks=require('../../../assets/images/snacks.jpg')
+    const dinner=require('../../../assets/images/dinner.jpg')
 
     const [type, setType] = useState('');
     const [calorie, setCalorie] = useState();
@@ -208,14 +214,29 @@ const DietScreen = ()=>{
         <View style={styles.centeredView}>
         <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+            // Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <View >
+          <LinearGradient
+            colors={['#666666',
+                '#767676',
+                '#868686',
+                '#969696',
+                '#a7a7a7',
+                '#b8b8b8',
+                '#c9c9c9',
+                '#dbdbdb',
+                '#ededed',
+                '#ffffff']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.modalView}
+            >
             <Text style={styles.modalText}>Add your {type} calories!</Text>
             <TextInput 
              maxLength={30}
@@ -224,32 +245,67 @@ const DietScreen = ()=>{
              style={styles.input} 
              placeholderTextColor='grey'
              autoCapitalize="none"></TextInput>
-            <CustomButton
-            text={"Add Calories"}
-            onPress={onAddPressed}/>
-            <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text> 
+             <Pressable 
+             onPress={onAddPressed}>
+                <LinearGradient
+                colors={['#ff9900',
+                    '#ff9c0e',
+                    '#ff9f18',
+                    '#ffa21f',
+                    '#ffa526',
+                    '#ffa82d',
+                    '#ffab33',
+                    '#ffae38',
+                    '#ffb13e',
+                    '#ffb443']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.container5}
+                >
+             <Text style={styles.text4}>Add Calories</Text>
+             </LinearGradient>
+             </Pressable>
+            <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
+            </LinearGradient> 
           </View>
         </View>
         </Modal>
+        
         </View>
-           <View style={styles.container}>
+           <View>
+           <LinearGradient
+            colors={['#333333',
+                '#404040',
+                '#4d4d4d',
+                '#5a5a5a',
+                '#686868',
+                '#767676',
+                '#848484',
+                '#939393',
+                '#a2a2a2',
+                '#b1b1b1']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.container}
+            >
             <View style={styles.containerTwo}>
-            <Text style={styles.text}>Eaten:</Text>
-            <Text style={styles.text}>{inputCalorie}</Text>
+            <View style={{justifyContent:'center'}}><Text style={styles.text1}>Eaten:</Text></View>
+            <View style={{justifyContent:'center'}}><Text style={[styles.text1,]}>{inputCalorie}</Text></View>
             </View>
             <View style={styles.containerTwo}>
-            <Text style={styles.text}>Burned:</Text>
-            <Text style={styles.text}>{outputCalorie}</Text>
+            <View><Text style={styles.text2}>Burned:</Text></View>
+            <View><Text style={[styles.text2,]}>{outputCalorie}</Text></View>
             </View>
             <View style={styles.containerTwo}>
-            <Text style={styles.text}>Left:</Text>
-            <Text style={styles.text}>{left}</Text>
+            <View><Text style={styles.text3}>Left:</Text></View>
+            <View><Text style={[styles.text3,]}>{left}</Text></View>
             </View>
             <Text style={styles.text}>{calorieStatus}</Text>
+            </LinearGradient>
            </View>
            <View style={{flex:1, flexDirection:'column', justifyContent:'space-evenly'}}>
            <View style={{flex:1, flexDirection:'row',paddingLeft:17,justifyContent:'center',alignItems:'center'}}>
-            <Text style={{color:'black',}}>Calories Burned:</Text>
+            <Text style={{color:'#333333', fontSize:20, fontWeight:'bold'}}>Calories Burned:</Text>
             <TextInput 
              maxLength={30}
              value={burned_calorie} 
@@ -258,30 +314,69 @@ const DietScreen = ()=>{
              placeholderTextColor='grey'
              autoCapitalize="none"></TextInput>
              </View>
-             <View style={{flex:1, flexDirection:'row',justifyContent:'space-evenly'}}>
-            <CustomButton
-            type={"FOURTH"}
-            text={"Submit"}
-            onPress={onSubmitPressed}/>
-            <CustomButton
-            type={"FOURTH"}
-            text={"Clear"}
-            onPress={onClearPressed}/>
+            <View style={{flex:1, flexDirection:'row',justifyContent:'space-evenly'}}>
+             <Pressable 
+             onPress={onSubmitPressed} 
+             >
+            <LinearGradient
+             colors={['#00ff00',
+                '#00ff2d',
+                '#00ff42',
+                '#00ff53',
+                '#00ff61',
+                '#00ff6e',
+                '#00ff7a',
+                '#00ff85',
+                '#00ff8f',
+                '#00ff99']}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 1, y: 1 }}
+             style={styles.container4}
+             >
+             <Text style={styles.text4}>Submit</Text>
+             </LinearGradient>
+             </Pressable>
+
+             <Pressable 
+             onPress={onClearPressed}>
+                <LinearGradient
+             colors={['#ff1a00',
+                '#ff331a',
+                '#ff442c',
+                '#ff533b',
+                '#ff604a',
+                '#ff6d58',
+                '#ff7966',
+                '#ff8474',
+                '#ff8f81',
+                '#ff9a8e'
+                ]}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 1, y: 1 }}
+             style={styles.container4}
+             >
+             <Text style={styles.text4}>Clear</Text>
+             </LinearGradient>
+             </Pressable>
             </View>
            </View>
            <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
            <CustomPress
            text={"Breakfast"}
-           onPress={onBreakfastPressed}/>
+           onPress={onBreakfastPressed}
+           image={breakfast}/>
            <CustomPress
            text={"Lunch"}
-           onPress={onLunchPressed}/>
+           onPress={onLunchPressed}
+           image={lunch}/>
            <CustomPress
            text={"Snacks"}
-           onPress={onSnacksPressed}/>
+           onPress={onSnacksPressed}
+           image={snacks}/>
            <CustomPress
            text={"Dinner"}
-           onPress={onDinnerPressed}/>
+           onPress={onDinnerPressed}
+           image={dinner}/>
     </ScrollView>
     )
 }
@@ -308,10 +403,29 @@ const styles= StyleSheet.create({
         flex: 1,
         flexDirection:'column',
     },
+    containerTwo:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'flex-start',
+    },
     text:{
-        color:'#FFFF',
+        color:'#FFFFFF',
+        fontSize: 40,  
+        fontWeight: '600',
+    },
+    text1:{
+        color:'#00ff99',
+        fontSize: 40,  
+        fontWeight: '600',
+    },
+    text2:{
+        color:'#ff1a00',
         fontSize: 40,
-        marginBottom: 50,
+        fontWeight: '600',
+    },
+    text3:{
+        color:'#FFFFFF',
+        fontSize: 40,
         fontWeight: '600',
     },
     containerTwo:{
@@ -320,6 +434,7 @@ const styles= StyleSheet.create({
         alignItems:'center',
     },
     modalView: {
+        width:350,
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
@@ -351,15 +466,22 @@ const styles= StyleSheet.create({
         textAlign: 'center',
       },
       modalText: {
-        color:'black',
+        color:'#ffffff',
+        fontSize:20,
+        fontWeight:'bold',
         marginBottom: 15,
         textAlign: 'center',
       },
       input:{
-        color:'black',
+        width:150,
+        backgroundColor:'#FFFFFF',
+        fontWeight:'bold',
+        fontSize:20,
+        color:'#333333',
+        borderColor:'#333333',
         borderRadius:12,
-        borderWidth:1,
-        paddingHorizontal:50,
+        borderWidth:2,
+        paddingHorizontal:25,
         marginHorizontal:20,
         textAlign:'center',
         marginVertical:20,
@@ -369,6 +491,25 @@ const styles= StyleSheet.create({
         marginVertical: '5%',
         marginHorizontal: '5%'
     },
+    container4:{
+        width: 100,
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    container5:{
+        width: 150,
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    text4:{
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+    },
 })
+
 
 export default DietScreen

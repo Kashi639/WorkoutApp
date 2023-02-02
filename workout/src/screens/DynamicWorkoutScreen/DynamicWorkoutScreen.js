@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Orientation from 'react-native-orientation-locker';
 import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const DynamicWorkoutScreen =({route})=>{
     const {id} = route.params;
@@ -52,10 +53,25 @@ const DynamicWorkoutScreen =({route})=>{
 
     return(
         <ScrollView style={styles.dynamicworkoutScreen}>
-            <View style={styles.container}>
-            <View>
+            <View >
+            <LinearGradient
+            colors={['#333333',
+                '#404040',
+                '#4d4d4d',
+                '#5a5a5a',
+                '#686868',
+                '#767676',
+                '#848484',
+                '#939393',
+                '#a2a2a2',
+                '#b1b1b1']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.container}
+            >
+            <View style={{paddingTop:15}}>
                 <Text style={styles.titletextStyle}>{day1}</Text>
-                <Text style={styles.titletextStyle}>{titleText}</Text>
+                <Text style={styles.titletextStyle2}>{titleText}</Text>
             </View>
             <View style= {fullScreen ?  styles.fullscreenVideo : styles.video }>
             <VideoPlayer
@@ -72,13 +88,31 @@ const DynamicWorkoutScreen =({route})=>{
             
             </View>
             <View>
+                <Text style={styles.textStyle2}>Tutorial</Text>
                 <Text style={styles.textStyle}>{text}</Text>
             </View>
+            </LinearGradient>
             </View>
-            <View style={styles.container}>
+
             <View>
+            <LinearGradient
+            colors={['#333333',
+                '#404040',
+                '#4d4d4d',
+                '#5a5a5a',
+                '#686868',
+                '#767676',
+                '#848484',
+                '#939393',
+                '#a2a2a2',
+                '#b1b1b1']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.container}
+            >
+            <View style={{paddingTop:15}}>
                 <Text style={styles.titletextStyle}>{day2}</Text>
-                <Text style={styles.titletextStyle}>{titleText2}</Text>
+                <Text style={styles.titletextStyle2}>{titleText2}</Text>
             </View>
             <View style= {fullScreen ?  styles.fullscreenVideo : styles.video }>
             <VideoPlayer
@@ -95,8 +129,10 @@ const DynamicWorkoutScreen =({route})=>{
             
             </View>
             <View>
+                <Text style={styles.textStyle2}>Tutorial</Text>
                 <Text style={styles.textStyle}>{text2}</Text>
             </View>
+            </LinearGradient>
             </View>
         </ScrollView>
     )
@@ -104,11 +140,11 @@ const DynamicWorkoutScreen =({route})=>{
 
 const styles = StyleSheet.create({
     dynamicworkoutScreen:{
-        backgroundColor: "#FFFF",
+        backgroundColor: "#FFFFFF",
         flex: 1,
     },
     container:{
-        backgroundColor: '#536DFE',
+        // backgroundColor: '#536DFE',
         // width: '90%',
         borderWidth: 0,
         borderRadius: 10,
@@ -120,13 +156,27 @@ const styles = StyleSheet.create({
     titletextStyle:{
         alignSelf: 'flex-start',
         fontSize: 40,
-        marginBottom: 50,
-        color: '#FFFF',
+        marginBottom: 30,
+        color: '#FFFFff',
+        fontWeight: '600',  
+    },
+    titletextStyle2:{
+        alignSelf: 'flex-start',
+        fontSize: 30,
+        marginBottom: 30,
+        color: '#FFFFFF',
         fontWeight: '600',  
     },
     textStyle:{
-        color: "#ffff",
+        color: "#ffffff",
         fontSize: 20,
+        marginTop:10,
+    },
+    textStyle2:{
+        color: "#ffffff",
+        fontSize: 30,
+        marginTop:10,
+        fontWeight:'bold'
     },
     video:{
         alignItems:'center',

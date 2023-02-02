@@ -40,6 +40,8 @@ router.post('/signup', (req, res, next) => {
                     }))
                     .then(() => {
                         res.status(200).json({message: "user created"});
+                        const sessName= req.body.name;
+                        req.session.name=sessName;
                     })
                     .catch(err => {
                         console.log(err);
@@ -134,7 +136,19 @@ router.post('/sohan', (req,res,next)=>{
 
 router.post('/form', form);
 
-router.get('/workouts/:workoutname', workout)
+router.get('/workouts/flatlist', async (req,res,next)=>{
+    try {
+        const workouts = await Workout.findAll({
+          where: {
+            user_id: req.session.name
+          },
+          order: [['workout_id', 'ASC']]
+        });
+        res.status(200).json(workouts);
+      } catch (error) {
+        res.status(500).json({ message: 'Error fetching workouts', error });
+      }
+});
 
 router.post('/workouts/form', (req,res,next)=>{
     if(!req.body){
@@ -203,6 +217,30 @@ router.post('/workouts/form', (req,res,next)=>{
             }
         })
     }
+});
+
+router.get('/workouts/:day', (req,res,next)=>{
+    Workout.findAll({where:{
+            user_id: req.session.name,
+            day: req.params.day
+        }})
+        .then(data=>{
+            res.json(data);
+        })
+        .catch(err=>{
+            res.status(500).json(err);
+        });
+})
+
+// Routes for Profile Screen
+
+router.delete('/workouts/delete', async (req,res,next)=>{
+    try {
+       await Workout.destroy({where:{user_id:req.session.name}});
+       res.status(200).json({message: 'Workouts deleted'})
+    } catch (err) {
+        res.status(500).json({message: 'An error occured while deleting your workouts'})
+    }
 })
 
 router.delete('/account', async (req,res,next)=>{
@@ -214,15 +252,6 @@ router.delete('/account', async (req,res,next)=>{
         res.status(500).json({ message: 'An error occurred while deleting your account.' });
     }
 });
-
-router.delete('/workouts/delete', async (req,res,next)=>{
-    try {
-       await Workout.destroy({where:{user_id:req.session.name}});
-       res.status(200).json({message: 'Workouts deleted'})
-    } catch (err) {
-        res.status(500).json({message: 'An error occured while deleting your workouts'})
-    }
-})
 
 router.get('/signout', (req,res,next)=>{
     if (req.session) {
@@ -274,6 +303,8 @@ router.post('/insert', (req,res,next)=>{
     }
     )
 })
+
+// Routes for Diet Screen
 
 router.post('/diet', (req,res,next)=>{
     if(req.body.calorie== null){

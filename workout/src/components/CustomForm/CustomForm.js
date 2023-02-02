@@ -2,6 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {ScrollView,View,Text,TextInput,StyleSheet,TouchableOpacity,} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import LinearGradient from 'react-native-linear-gradient';
 
 const API_URL = Platform.OS === 'android' ? 'http://localhost:3000' : 'http://192.168.2.143:3000';
 
@@ -113,19 +114,19 @@ const CustomForm =({route})=>{
     return(
         <ScrollView style={styles.form}>
             <View style={styles.inputs}>
-            <Text style={{color:'black', alignSelf:'center'}}>Workout Name:</Text>    
+            <Text style={{color:'#333333', alignSelf:'center', fontSize:20, fontWeight:'bold'}}>Workout Name:</Text>    
             <TextInput 
              maxLength={30}
              value={workout_name} 
              onChangeText={setWorkout_name}
              style={styles.input} 
              placeholder="Eg. Hybrid Callisthenics"
-             placeholderTextColor='grey'
+             placeholderTextColor='#666666'
              autoCapitalize="words"></TextInput>
             </View>
 
             <View style={styles.inputs}>
-            <Text style={{color:'black', alignSelf:'center'}}>Day:</Text>    
+            <Text style={{color:'#333333', alignSelf:'center', fontSize:20, fontWeight:'bold'}}>Day:</Text>    
             <View style={{marginLeft:12, marginRight:20}}>
             <DropDownPicker
              open={dayOpen}
@@ -134,13 +135,24 @@ const CustomForm =({route})=>{
              setOpen={setDayOpen}
              setValue={setDay}
              setItems={setDayItems}
-             zIndex={3000}
+             zIndex={2000}
+             zIndexInverse={1000}
+             placeholder="Select Day"
+             placeholderStyle={{
+                color: "#666666",
+                fontWeight: "bold",
+                fontSize:15
+              }}
+              textStyle={{
+                fontSize: 15,
+                color:'#333333'
+              }}
             />
             </View>
             </View>
             <View style={{flex:1,flexDirection:'row'}}>
             <View style={styles.inputs_2}>
-            <Text style={{color:'black', alignSelf:'flex-start'}}>Exercise 1:</Text>    
+            <Text style={{color:'#333333', alignSelf:'flex-start', fontSize:20, fontWeight:'bold'}}>Exercise 1:</Text>    
             <DropDownPicker
              style={{marginRight:20, marginTop:12}}
              open={exercise1Open}
@@ -149,11 +161,22 @@ const CustomForm =({route})=>{
              setOpen={setExercise1Open}
              setValue={setExercise1}
              setItems={setExercise1Items}
-             zIndex={2000}
+             zIndex={1000}
+             zIndexInverse={2000}
+             placeholder="Select Exercise 1"
+             placeholderStyle={{
+                color: "#666666",
+                fontWeight: "bold",
+                fontSize:15
+              }}
+              textStyle={{
+                fontSize: 15,
+                color:'#333333'
+              }}
             />
             </View>
             <View style={styles.inputs_2}>
-            <Text style={{color:'black', alignSelf:'flex-start'}}>Exercise 2:</Text>    
+            <Text style={{color:'#333333', alignSelf:'flex-start', fontSize:20, fontWeight:'bold'}}>Exercise 2:</Text>    
             <DropDownPicker
             style={{marginRight:20, marginTop:12}}
              open={exercise2Open}
@@ -163,12 +186,23 @@ const CustomForm =({route})=>{
              setValue={setExercise2}
              setItems={setExercise2Items}
              zIndex={1000}
+             zIndexInverse={2000}
+             placeholder="Select Exercise 2"
+             placeholderStyle={{
+                color: "#666666",
+                fontWeight: "bold",
+                fontSize:15
+              }}
+              textStyle={{
+                fontSize: 15,
+                color:'#333333'
+              }}
             />
             </View>
             </View>
             <View style={{flex:1,flexDirection:'row'}}>
             <View style={styles.inputs_2}>
-            <Text style={{color:'black', alignSelf:'flex-start'}}>Reps:</Text>
+            <Text style={{color:'#333333', alignSelf:'flex-start', fontSize:20, fontWeight:'bold'}}>Reps:</Text>
             <View style={{flex:1,flexDirection:'row',marginTop:12}}>
             <TextInput 
              maxLength={30}
@@ -194,7 +228,7 @@ const CustomForm =({route})=>{
             </View>
             </View>
             <View style={styles.inputs_2}>
-            <Text style={{color:'black', alignSelf:'flex-start'}}>Reps:</Text>
+            <Text style={{color:'#333333', alignSelf:'flex-start', fontSize:20, fontWeight:'bold'}}>Reps:</Text>
             <View style={{flex:1,flexDirection:'row', marginTop:12}}>
             <TextInput 
              maxLength={30}
@@ -224,16 +258,32 @@ const CustomForm =({route})=>{
             
 
             <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text> 
-            <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
+            <TouchableOpacity  onPress={onSubmitHandler}>
+            <LinearGradient
+                colors={['#ff9900',
+                    '#ff9c0e',
+                    '#ff9f18',
+                    '#ffa21f',
+                    '#ffa526',
+                    '#ffa82d',
+                    '#ffab33',
+                    '#ffae38',
+                    '#ffb13e',
+                    '#ffb443']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.button}
+                >
                 <Text style={styles.buttonText}>Submit</Text>
+            </LinearGradient>
             </TouchableOpacity> 
-            <TouchableOpacity style={[styles.button, {backgroundColor:'#ffff'}, {borderWidth:1}, {borderColor:'#7037EF'}]} onPress={()=>{navigation.navigate({
+            <TouchableOpacity style={[styles.button, {backgroundColor:'#ffff'}, {borderWidth:1}, {borderColor:'#ff9900'}]} onPress={()=>{navigation.navigate({
                                                             name: 'Workouts',
                                                             params: { workoutname: workout_name},
                                                             merge: true,
                                                             });
                                                             }}>
-                <Text style={[styles.buttonText, {color: '#7037EF'}]}>Go Back</Text>
+                <Text style={[styles.buttonText, {color: '#ff9900'}]}>Go Back</Text>
             </TouchableOpacity>  
         </ScrollView>
     )
@@ -251,11 +301,12 @@ const styles= StyleSheet.create({
         paddingLeft:10,
     },
     input:{
-        color:'black',
+        color:'#333333',
         borderRadius:12,
-        borderWidth:1,
+        borderWidth:2,
         paddingHorizontal:10,
         marginLeft:12,
+        fontSize:15
     },
     inputs_2:{
         flex: 1,
@@ -267,16 +318,16 @@ const styles= StyleSheet.create({
     input2:{
         marginRight:20, 
         marginTop:12,
-        color:'black',
+        color:'#333333',
         borderRadius:12,
-        borderWidth:1,
+        borderWidth:2,
         paddingHorizontal:10,
         marginLeft:0,
     },
     input_3:{
-        color:'black',
+        color:'#333333',
         borderRadius:12,
-        borderWidth:1,
+        borderWidth:2,
         paddingHorizontal:10,
         marginLeft:0,
         marginRight:10,

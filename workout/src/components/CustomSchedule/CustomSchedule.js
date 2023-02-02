@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 
-const CustomSchedule = ({onPress, text,}) =>{
+const CustomSchedule = ({onPress, text,  type="PRIMARY"}) =>{
     return(
         <Pressable 
         onPress={onPress} 
         style={styles.week}>
-            <Text style={styles.text}>{text}</Text>
+            <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
         </Pressable>
     )
 }
@@ -20,7 +20,7 @@ const styles= StyleSheet.create({
     text:{
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#FFFF',
+        color: '#FFFFFF',
         alignItems: 'center',
     },
     text_SECONDARY:{
@@ -29,6 +29,9 @@ const styles= StyleSheet.create({
     },
     text_TERTIARY:{
         color: 'gray',
+    },
+    text_FOURTH:{
+        color:'#ffffff'
     }
 })
 

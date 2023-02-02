@@ -46,14 +46,15 @@ const MainContainer =()=>{
 
                     return <Ionicons name ={iconName} size={size} color={color}/>
                 },
-                tabBarActiveTintColor: "#536dfe",
-                tabBarInactiveTintColor: "gray",
+                tabBarActiveTintColor: "#FF9900",
+                tabBarInactiveTintColor: "#666666",
                 tabBarLabelStyle: {
                     paddingBottom: 10,
                     fontSize: 10
                   },
                   tabBarStyle: [
                     {
+                      backgroundColor: '#333333',
                       display: 'flex',
                       padding:10,
                       height:70

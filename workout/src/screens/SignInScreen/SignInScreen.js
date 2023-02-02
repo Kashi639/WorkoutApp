@@ -2,10 +2,11 @@
 import React, {useState} from 'react';
 import {Text, View, TextInput, Pressable, StyleSheet, Image, useWindowDimensions, ScrollView, Platform, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Logo from '../../../assets/images/Logo_1.png';
+import Logo from '../../../assets/images/Logo_3.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const API_URL = Platform.OS === 'android' ? 'http://localhost:3000' : 'http://192.168.2.143:3000';
 
@@ -70,18 +71,30 @@ const SignInScreen = () => {
             try {
                 const jsonRes = await res.json();
                 if (res.status !== 200) {
+                    nav=()=>{
+                        setMessage(null);
+                    }
                     setIsError(true);
                     setMessage(jsonRes.message);
+                    setTimeout(nav, 1000);
                 } else {
+                    nav=()=>{
+                        navigation.navigate('Temp');
+                        setMessage(null)
+                        setEmail('');
+                        setName('');
+                        setPassword('');
+                    }
                     onLoggedIn(jsonRes.token);
                     setIsError(false);
                     setMessage(jsonRes.message);
-                    if (isLogin == true) {
-                        navigation.navigate('Temp');
-                    } else {
-                        isLogin=true;
-                        onChangeHandler(isLogin);
-                    }
+                    setTimeout(nav, 1000);
+                    // if (isLogin == true) {
+                    //     navigation.navigate('Temp');
+                    // } else {
+                    //     isLogin=true;
+                    //     onChangeHandler(isLogin);
+                    // }
                 }
             } catch (err) {
                 console.log(err);
@@ -97,26 +110,15 @@ const SignInScreen = () => {
         return status + message;
     }
 
-
-    /*const onSignInPressed = () =>{
-
-        navigation.navigate('Temp');
-        //validate user, sending it to backend
-
-    }
-
-    const onForgotPasswordPressed =()=>{
-        navigation.navigate('ForgotPassword');
-        //then enter email to reset pass
-    }
-
-    const onSignUpPressed=()=>{
-        navigation.navigate('SignUp');
-    }*/
-
     return(
+        <LinearGradient
+        colors={['#ffb443',  '#ffff']}
+        style={{flex:1}}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        >
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding: 20,
-            backgroundColor: '#FFFF',
+            // backgroundColor: '#FFFF',
             flex: 1,
             justifyContent: 'center',}}>
             <View style={styles.logoStyle}>
@@ -125,7 +127,7 @@ const SignInScreen = () => {
             <Text style={styles.loginText}>Welcome!</Text>
             <View style={styles.viewStyle}>
             <View alignSelf='center'>
-            <Icon name="account" size={30} color="#7037EF"/>
+            <Icon name="account" size={30} color="#333333"/>
             </View>
             <View style={styles.inputs}>
             <TextInput 
@@ -133,14 +135,14 @@ const SignInScreen = () => {
              onChangeText={setName}
              style={styles.input} 
              placeholder="Username"
-             placeholderTextColor='grey'
+             placeholderTextColor='#666666'
              autoComplete="name"
              autoCapitalize="none"></TextInput>
             </View>
             </View>
             {!isLogin && <View style={styles.viewStyle}>
             <View alignSelf='center'>
-            <Icon name="email" size={30} color="#7037EF"/>
+            <Icon name="email" size={30} color="#333333"/>
             </View>
             <View style={styles.inputs}>
             <TextInput 
@@ -148,21 +150,21 @@ const SignInScreen = () => {
              onChangeText={setEmail}
              style={styles.input} 
              placeholder="Email Address"
-             placeholderTextColor='grey'
+             placeholderTextColor='#666666'
              autoComplete="email"
              autoCapitalize="none"></TextInput>
             </View>
             </View>}
             <View style={styles.viewStyle}>
             <View alignSelf='center'>
-            <Icon name="lock" size={30} color="#7037EF"/>
+            <Icon name="lock" size={30} color="#333333"/>
             </View>
             <View style={styles.inputs}>
             <TextInput 
              value={password}
              onChangeText={setPassword}
              placeholder= "Password"
-             placeholderTextColor='grey' 
+             placeholderTextColor='#666666' 
              style={styles.input}
              secureTextEntry={true}
              autoComplete="password"
@@ -171,15 +173,31 @@ const SignInScreen = () => {
             </View>
             <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
             <View style={{alignItems: 'center'}}>
-            <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
-                <Text style={styles.buttonText}>Done</Text>
+
+            <TouchableOpacity  onPress={onSubmitHandler}>
+            <LinearGradient
+             colors={['#666666','#ffffff']}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 1, y: 1 }}
+             style={styles.button}
+            >
+            <Text style={styles.buttonText}>Done</Text>
+            </LinearGradient>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonAlt} onPress={onChangeHandler}>
+            <TouchableOpacity onPress={onChangeHandler}>
+            <LinearGradient 
+            colors={['#FF9900', '#ffffff']}
+             start={{ x: 1, y: 1 }}
+             end={{ x: 0, y: 0 }}
+             style={styles.buttonAlt}
+            >
                 <Text style={styles.buttonAltText}>{isLogin ? 'Sign Up' : 'Log In'}</Text>
+            </LinearGradient>
             </TouchableOpacity>
             </View>
         </ScrollView>
+        </LinearGradient>
     )
 }
 const styles = StyleSheet.create({
@@ -202,31 +220,32 @@ const styles = StyleSheet.create({
         marginVertical: '5%',
     },
     button:{
-        width: '80%',
-        backgroundColor: '#7037EF',
-        height: 40,
+        // width: '80%',
+        // backgroundColor: '#7037EF',
+        // height: 40,
+        paddingHorizontal: '30%',
+        paddingVertical: 10,
         borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 5,
+        
     },
     buttonText:{
-        color: 'white',
+        color: '#333333',
         fontSize: 16,
         fontWeight: '400'
     },
     buttonAlt: {
-        width: '80%',
-        borderWidth: 1,
-        height: 40,
+        paddingHorizontal: '27%',
+        paddingVertical: 10,
         borderRadius: 50,
-        borderColor: '#7037EF',
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 5,
     },
     buttonAltText: {
-        color: '#7037EF',
+        color: '#ffff',
         fontSize: 16,
         fontWeight: '400',
     },
@@ -250,7 +269,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 30,
         marginBottom: 50,
-        color: '#7037EF',
+        color: '#333333',
         fontWeight: '600',
     },
     viewStyle: {

@@ -1,32 +1,24 @@
 import React,{useState, useEffect}from 'react';
 import {View, Text, StyleSheet,ScrollView, SafeAreaView,Pressable,FlatList,TouchableOpacity} from 'react-native';
-import CustomPress from '../../components/CustomPress';
+import CustomPressTwo from '../../components/CustomPressTwo';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
 // import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const WorkoutScreen = ({route})=>{
     const [workouts, setWorkouts] = useState([]);
     const [error, setError] = useState('');
     useEffect(()=>{
-        if(route.params?.workoutname){
-        const workoutname = route.params?.workoutname;
-        fetch(`/workouts/${workoutname}`)
-        .then(res => res.json(),
-        console.log(workouts))
-        .then(data => {
-            if(data.length > 0 && data[0].hasOwnProperty("workout_id") && data[0].hasOwnProperty("workout_name")){
-                setWorkouts(data.map(workout => ({ id: workout.workout_id, title: workout.workout_name })));
-            }else{
-                console.log(workouts)
-                setWorkouts([]);
-            }
-          })
+        // const workoutname = route.params?.workoutname;
+        fetch('http://localhost:3000/workouts/flatlist')
+        .then(response => {
+          setWorkouts(response.data);
+        })
         .catch(error => {
-        setError(error);
-      });
-    }
-  }, [route.params?.workoutname]);
+          console.log(error);
+        });
+  }, []);
 
   const renderItem = ({ item }) => {
     if(!item) return null;
@@ -72,23 +64,24 @@ const WorkoutScreen = ({route})=>{
 
     return(
         <ScrollView horizontal={false} style={{flex: 1, backgroundColor: 'white'}}>
-        <CustomPress
+        <CustomPressTwo
         text={"Hybrid Workout"} 
         onPress={onHybridWorkoutPressed}/>
-        <CustomPress
+        <CustomPressTwo
         text={"HIT Workout"} 
         onPress={onHITWorkoutPressed}/>
-        <CustomPress
+        <CustomPressTwo
         text={"Add your own Workout Routine"} 
         onPress={onAddPressed}/>
         <ScrollView horizontal={true} style={{flex:1, flexDirection:'column'}}>
-        {error ? <Text>Error: {error.message}</Text> :
+        {/* error ? <Text>Error: {error.message}</Text> : */}
+        
         <FlatList
-          data={workouts}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
+        data={workouts}
+        keyExtractor={item => item.workout_id.toString()}
+        renderItem={({ item }) => <WorkoutItem workout={item} />}
         />
-        }
+        
         </ScrollView>
         </ScrollView>
     )
